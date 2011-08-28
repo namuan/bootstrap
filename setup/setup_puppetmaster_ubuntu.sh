@@ -1,7 +1,7 @@
 #!/bin/bash
 
 HOME=/mnt
-LOCAL_BIN=$HOME/local
+LOCAL=$HOME/local
 SETUP=$HOME/setup
 WORKSPACE=$HOME/workspace
 SOFTWARES=$HOME/softwares
@@ -88,4 +88,19 @@ setupruby() {
 export -f setupruby
 su imon -c "setupruby"
 
+setuprubygems() {
+  echo "Install rubygems"
+  if [ -e $LOCAL/ruby ]
+  then
+    gem --version
+  else
+    wget  http://production.cf.rubygems.org/rubygems/rubygems-1.8.7.tgz
+    tar xf rubygems-1.8.7.tgz
+    cd rubygems-1.8.7
+    ruby setup.rb
+    gem update --system
+}
+
+# export -f setuprubygems
+# su imon -c "setuprubygems"
 exit 0
