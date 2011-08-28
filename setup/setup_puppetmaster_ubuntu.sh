@@ -1,5 +1,12 @@
 #!/bin/bash
 
+HOME=/mnt
+LOCAL_BIN=$HOME/local
+SETUP=$HOME/setup
+WORKSPACE=$HOME/workspace
+SOFTWARES=$HOME/softwares
+TEMP=$HOME/temp
+
 sudo ifconfig eth0 mtu 1492
 
 # Installing  pre-reqs
@@ -16,10 +23,10 @@ fi
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
-	echo 'export PATH=/mnt/local/git/bin:$PATH' >> ~/.devprofile
-	echo 'export PATH=/mnt/local/node/bin:$PATH' >> ~/.devprofile
-  	echo 'export PATH=/mnt/local/ruby/bin:$PATH' >> ~/.devprofile
-	echo 'export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules' >> ~/.devprofile
+	echo "export PATH=$LOCAL/git/bin:$PATH" >> ~/.devprofile
+	echo "export PATH=$LOCAL/node/bin:$PATH" >> ~/.devprofile
+  	echo "export PATH=$LOCAL/ruby/bin:$PATH" >> ~/.devprofile
+	echo "export NODE_PATH=$LOCAL/node:$LOCAL/node/lib/node_modules" >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
 	grep '.devprofile' ~/.bashrc
@@ -34,24 +41,24 @@ setupprofile() {
 export -f setupprofile
 su imon -c "setupprofile"
 
-rm -rf /mnt/*
-mkdir -vp /mnt/setup;mkdir -vp /mnt/softwares;mkdir -vp /mnt/workspace;mkdir -vp /mnt/.m2;mkdir -vp /mnt/.ivy2;mkdir -vp /mnt/local
+rm -rf $HOME/*
+mkdir -vp $SETUP;mkdir -vp $SOFTWARES;mkdir -vp $WORKSPACE;mkdir -vp $LOCAL
 sudo chown -R imon:imon /mnt
 
 # setup git
 setupgit() {
 
   source ~/.bashrc
-  which git
-  if [ $? -eq 0 ]
+
+  if [ -e $LOCAL/git/bin/git ]
   then
     git --version   
   else
-    cd /mnt/setup
+    cd $SETUP
     wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
     tar xf git-1.7.3.5.tar.bz2
     cd git-1.7.3.5
-    ./configure --prefix=/mnt/local/git --without-tcltk
+    ./configure --prefix=$LOCAL/git --without-tcltk
     make
     make install
   fi
@@ -63,20 +70,18 @@ su imon -c "setupgit"
 setupruby() {
   source ~/.bashrc
   
-  which ruby
-  if [ $? -eq 0 ]
+  if [ -e $LOCAL/ruby/bin/ruby ]
   then
     ruby --version
   else
-
-  cd /mnt/setup
-  wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
-  tar xf  ruby-1.9.2-p0.tar.gz
-  cd ruby-1.9.2-p0
-  ./configure --prefix=/mnt/local/ruby
-  make
-  make install
-  ruby --version
+  
+    cd $SETUP
+    wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
+    tar xf  ruby-1.9.2-p0.tar.gz
+    cd ruby-1.9.2-p0
+    ./configure --prefix=$LOCAL/ruby
+    make
+    make install
 
   fi
 }
