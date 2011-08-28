@@ -1,0 +1,13 @@
+[user]
+  name = namuan
+  email = nleghari@gmail.com
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+[alias]
+  st = status
+  ci = commit
+  co = checkout
+[merge]
+  tool = diff
