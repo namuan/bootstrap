@@ -1,11 +1,11 @@
 #!/bin/bash
 
-MNT=/mnt
-LOCAL=$MNT/local
-SETUP=$MNT/setup
-WORKSPACE=$MNT/workspace
-SOFTWARES=$MNT/softwares
-TEMP=$MNT/temp
+mnt=/mnt
+LOCAL=/mnt/local
+SETUP=/mnt/setup
+WORKSPACE=/mnt/workspace
+SOFTWARES=/mnt/softwares
+TEMP=/mnt/temp
 
 sudo ifconfig eth0 mtu 1492
 
@@ -23,10 +23,10 @@ fi
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
-	echo "export PATH=$LOCAL/git/bin:$PATH" >> ~/.devprofile
-	echo "export PATH=$LOCAL/node/bin:$PATH" >> ~/.devprofile
-  	echo "export PATH=$LOCAL/ruby/bin:$PATH" >> ~/.devprofile
-	echo "export NODE_PATH=$LOCAL/node:$LOCAL/node/lib/node_modules" >> ~/.devprofile
+	echo "export PATH=/mnt/local/git/bin:$PATH" >> ~/.devprofile
+	echo "export PATH=/mnt/local/node/bin:$PATH" >> ~/.devprofile
+  	echo "export PATH=/mnt/local/ruby/bin:$PATH" >> ~/.devprofile
+	echo "export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules" >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
 	grep '.devprofile' ~/.bashrc
@@ -41,7 +41,7 @@ setupprofile() {
 export -f setupprofile
 su imon -c "setupprofile"
 
-mkdir -vp $SETUP;mkdir -vp $SOFTWARES;mkdir -vp $WORKSPACE;mkdir -vp $LOCAL
+mkdir -vp /mnt/setup;mkdir -vp /mnt/softwares;mkdir -vp /mnt/workspace;mkdir -vp /mnt/local
 sudo chown -R imon:imon /mnt
 
 # setup git
@@ -49,15 +49,15 @@ setupgit() {
 
   source ~/.bashrc
 
-  if [ -e $LOCAL/git/bin/git ]
+  if [ -e /mnt/local/git/bin/git ]
   then
     git --version   
   else
-    cd $SETUP
+    cd /mnt/setup
     wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
     tar xf git-1.7.3.5.tar.bz2
     cd git-1.7.3.5
-    ./configure --prefix=$LOCAL/git --without-tcltk
+    ./configure --prefix=/mnt/local/git --without-tcltk
     make
     make install
   fi
@@ -69,16 +69,16 @@ su imon -c "setupgit"
 setupruby() {
   source ~/.bashrc
   
-  if [ -e $LOCAL/ruby/bin/ruby ]
+  if [ -e /mnt/local/ruby/bin/ruby ]
   then
     ruby --version
   else
   
-    cd $SETUP
+    cd /mnt/setup
     wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
     tar xf  ruby-1.9.2-p0.tar.gz
     cd ruby-1.9.2-p0
-    ./configure --prefix=$LOCAL/ruby
+    ./configure --prefix=/mnt/local/ruby
     make
     make install
 
@@ -90,7 +90,7 @@ su imon -c "setupruby"
 
 setuprubygems() {
   echo "Install rubygems"
-  if [ -e $LOCAL/ruby ]
+  if [ -e /mnt/local/ruby ]
   then
     gem --version
   else
