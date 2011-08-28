@@ -41,7 +41,6 @@ setupprofile() {
 export -f setupprofile
 su imon -c "setupprofile"
 
-rm -rf $HOME/*
 mkdir -vp $SETUP;mkdir -vp $SOFTWARES;mkdir -vp $WORKSPACE;mkdir -vp $LOCAL
 sudo chown -R imon:imon /mnt
 
