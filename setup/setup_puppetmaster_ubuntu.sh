@@ -14,6 +14,7 @@ setupprofile() {
 	echo '# dev profile' > ~/.devprofile
 	echo 'export PATH=/mnt/local/git/bin:$PATH' >> ~/.devprofile
 	echo 'export PATH=/mnt/local/node/bin:$PATH' >> ~/.devprofile
+  echo 'export PATH=/mnt/local/ruby/bin:$PATH' >> ~/.devprofile
 	echo 'export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules' >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
@@ -68,5 +69,19 @@ setupnode() {
 
 export -f setupnode
 su imon -c "setupnode"
+
+setupruby() {
+  cd /mnt/setup
+  wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
+  tar xf  ruby-1.9.2-p0.tar.gz
+  cd ruby-1.9.0-p0
+  ./configure --prefix=/mnt/local/ruby
+  make
+  make install
+  ruby --version
+}
+
+export -f setupruby
+su imon -c "setupruby"
 
 exit 0
