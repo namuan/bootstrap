@@ -89,18 +89,21 @@ export -f setupruby
 su imon -c "setupruby"
 
 setuprubygems() {
-  echo "Install rubygems"
-  if [ -e /mnt/local/ruby ]
+  source ~/.bashrc
+  if [ -e /mnt/local/ruby/bin/gem ]
   then
     gem --version
   else
+    cd /mnt/setup
     wget  http://production.cf.rubygems.org/rubygems/rubygems-1.8.7.tgz
     tar xf rubygems-1.8.7.tgz
     cd rubygems-1.8.7
     ruby setup.rb
     gem update --system
+  fi
 }
 
-# export -f setuprubygems
-# su imon -c "setuprubygems"
+export -f setuprubygems
+su imon -c "setuprubygems"
+
 exit 0
