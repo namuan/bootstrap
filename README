@@ -1,14 +1,14 @@
 git
 
-cp git/gitconfig ~/.gitconfig
-cp git/gitignore_global ~/gitignore_global
-git config --global core.excludesfile ~/.gitignore_global
+`cp git/gitconfig ~/.gitconfig`
+`cp git/gitignore_global ~/gitignore_global`
+`git config --global core.excludesfile ~/.gitignore_global`
 
 vim
-mkir -vp ~/.vim
-cp -vr 'vim/*' ~/.vim
-
-echo "source ~/.vim/vimrc" > ~/.vimrc
+`mkir -vp ~/.vim`
+`cp -vr 'vim/*' ~/.vim`
+`echo "source ~/.vim/vimrc" > ~/.vimrc`
 
 bash
-
+`copy bash/bashrc-nauman ~/bashrc-nauman`
+`echo "source ~/bashrc-nauman" >> ~/.bashrc`
