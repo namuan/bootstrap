@@ -1,11 +1,11 @@
 #!/bin/bash
 
-HOME=/mnt
-LOCAL=$HOME/local
-SETUP=$HOME/setup
-WORKSPACE=$HOME/workspace
-SOFTWARES=$HOME/softwares
-TEMP=$HOME/temp
+MNT=/mnt
+LOCAL=$MNT/local
+SETUP=$MNT/setup
+WORKSPACE=$MNT/workspace
+SOFTWARES=$MNT/softwares
+TEMP=$MNT/temp
 
 sudo ifconfig eth0 mtu 1492
 
