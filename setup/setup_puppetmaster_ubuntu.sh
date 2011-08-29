@@ -49,6 +49,7 @@ setupgit() {
 
   if [ -e /mnt/local/git/bin/git ]
   then
+    echo "git already installed"
     git --version   
   else
     cd /mnt/setup
@@ -69,6 +70,7 @@ setupruby() {
   
   if [ -e /mnt/local/ruby/bin/ruby ]
   then
+    echo "ruby already installed"
     ruby --version
   else
   
@@ -90,6 +92,7 @@ setuprubygems() {
   source ~/.bashrc
   if [ -e /mnt/local/ruby/bin/gem ]
   then
+    echo "rubygems already installed"
     gem --version
   else
     cd /mnt/setup
