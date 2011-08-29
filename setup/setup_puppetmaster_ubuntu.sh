@@ -44,6 +44,7 @@ setupgit() {
   source ~/.bashrc
   if [ -e $(which git) ]
   then
+    git --version
     return
   fi
 
@@ -63,6 +64,7 @@ setupruby() {
   source ~/.bashrc
   if [ -e $(which ruby) ]
   then
+    ruby --version
     return
   fi
 
