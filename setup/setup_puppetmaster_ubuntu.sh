@@ -8,9 +8,10 @@ sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential zli
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
 
-if [ ! grep 'imon' /etc/passwd ]
+grep 'imon' /etc/passwd
+if [ $? -ne 0 ]
 then
-    sudo useradd imon -m -s /bin/bash
+  sudo useradd imon -m -s /bin/bash
 fi
 
 setupprofile() {
@@ -21,10 +22,11 @@ setupprofile() {
 	echo 'export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules' >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
-  if [ ! grep '.devprofile' ~/.bashrc ]
-  then
-    echo 'source ~/.devprofile' >> ~/.bashrc
-  fi
+	grep '.devprofile' ~/.bashrc
+	if [ $? -ne 0 ]
+	then
+	  echo 'source ~/.devprofile' >> ~/.bashrc
+	fi
 
 	source ~/.bashrc
 }
