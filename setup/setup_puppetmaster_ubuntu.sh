@@ -47,34 +47,11 @@ setupgit() {
 export -f setupgit
 su imon -c "setupgit"
 
-setupnode() {
-	git --version
-
-	cd /mnt/setup
-	git clone --depth 1 git://github.com/joyent/node.git
-	cd node
-	git checkout origin/v0.4 
-	export JOBS=2 
-	./configure --prefix=/mnt/local/node
-	make
-	make install
-
-	source ~/.devprofile
-	node --version
-
-	curl http://npmjs.org/install.sh | sh
-	npm --version
-	npm install jslint -g
-}
-
-export -f setupnode
-su imon -c "setupnode"
-
 setupruby() {
   cd /mnt/setup
   wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
   tar xf  ruby-1.9.2-p0.tar.gz
-  cd ruby-1.9.0-p0
+  cd ruby-1.9.2-p0
   ./configure --prefix=/mnt/local/ruby
   make
   make install
