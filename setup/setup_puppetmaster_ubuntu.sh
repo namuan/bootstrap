@@ -45,17 +45,16 @@ setupgit() {
   which git
   if [ $? -eq 0 ]
   then
-    git --version
-    return
+    git --version   
+  else
+    cd /mnt/setup
+    wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
+    tar xf git-1.7.3.5.tar.bz2
+    cd git-1.7.3.5
+    ./configure --prefix=/mnt/local/git --without-tcltk
+    make
+    make install
   fi
-
-  cd /mnt/setup
-  wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
-  tar xf git-1.7.3.5.tar.bz2
-  cd git-1.7.3.5
-  ./configure --prefix=/mnt/local/git --without-tcltk
-  make
-  make install
 }
 
 export -f setupgit
@@ -63,12 +62,12 @@ su imon -c "setupgit"
 
 setupruby() {
   source ~/.bashrc
+  
   which ruby
   if [ $? -eq 0 ]
   then
     ruby --version
-    return
-  fi
+  else
 
   cd /mnt/setup
   wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
@@ -78,9 +77,10 @@ setupruby() {
   make
   make install
   ruby --version
+
+  fi
 }
 
-# check for ruby binary
 export -f setupruby
 su imon -c "setupruby"
 
