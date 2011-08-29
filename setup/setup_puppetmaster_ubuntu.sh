@@ -75,9 +75,9 @@ setupruby() {
   else
   
     cd /mnt/setup
-    wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
-    tar xf  ruby-1.9.2-p0.tar.gz
-    cd ruby-1.9.2-p0
+    wget wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.6-p287.tar.gz
+    tar xf  ruby-1.8.6-p287.tar.gz
+    cd ruby-1.8.6-p287
     ./configure --prefix=/mnt/local/ruby
     make
     make install
