@@ -45,7 +45,7 @@ sudo chown -R imon:imon /mnt
 # setup git
 setupgit() {
 
-  source ~/.bashrc
+  source ~/.devprofile
 
   if [ -e /mnt/local/git/bin/git ]
   then
@@ -66,7 +66,7 @@ export -f setupgit
 su imon -c "setupgit"
 
 setupruby() {
-  source ~/.bashrc
+  source ~/.devprofile
   
   if [ -e /mnt/local/ruby/bin/ruby ]
   then
@@ -89,7 +89,7 @@ export -f setupruby
 su imon -c "setupruby"
 
 setuprubygems() {
-  source ~/.bashrc
+  source ~/.devprofile
   if [ -e /mnt/local/ruby/bin/gem ]
   then
     echo "rubygems already installed"
