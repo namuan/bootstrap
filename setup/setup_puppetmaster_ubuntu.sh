@@ -94,6 +94,7 @@ setuprubygems() {
   then
     echo "rubygems already installed"
     gem --version
+    gem update --system
   else
     cd /mnt/setup
     wget  http://production.cf.rubygems.org/rubygems/rubygems-1.8.7.tgz
