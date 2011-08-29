@@ -42,7 +42,8 @@ sudo chown -R imon:imon /mnt
 setupgit() {
 
   source ~/.bashrc
-  if [ -e $(which git) ]
+  which git
+  if [ $? -eq 0 ]
   then
     git --version
     return
@@ -62,7 +63,8 @@ su imon -c "setupgit"
 
 setupruby() {
   source ~/.bashrc
-  if [ -e $(which ruby) ]
+  which ruby
+  if [ $? -eq 0 ]
   then
     ruby --version
     return
