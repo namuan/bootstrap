@@ -23,9 +23,7 @@ fi
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
-	echo "export PATH=/mnt/local/git/bin:$PATH" >> ~/.devprofile
-	echo "export PATH=/mnt/local/node/bin:$PATH" >> ~/.devprofile
-  	echo "export PATH=/mnt/local/ruby/bin:$PATH" >> ~/.devprofile
+ 	echo "export PATH=/mnt/local/git/bin:/mnt/local/ruby/bin:$PATH" >> ~/.devprofile
 	echo "export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules" >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
