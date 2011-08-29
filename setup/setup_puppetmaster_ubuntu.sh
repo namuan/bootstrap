@@ -8,13 +8,16 @@ sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential zli
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
 
-sudo useradd imon -m -s /bin/bash
+if [ ! grep 'imon' /etc/passwd ]
+then
+    sudo useradd imon -m -s /bin/bash
+fi
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
 	echo 'export PATH=/mnt/local/git/bin:$PATH' >> ~/.devprofile
 	echo 'export PATH=/mnt/local/node/bin:$PATH' >> ~/.devprofile
-  echo 'export PATH=/mnt/local/ruby/bin:$PATH' >> ~/.devprofile
+  	echo 'export PATH=/mnt/local/ruby/bin:$PATH' >> ~/.devprofile
 	echo 'export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules' >> ~/.devprofile
 
 	sed -i 's/#alias ll/alias ll/' ~/.bashrc
