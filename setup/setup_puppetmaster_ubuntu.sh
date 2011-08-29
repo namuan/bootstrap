@@ -3,7 +3,7 @@
 sudo ifconfig eth0 mtu 1492
 
 # Installing  pre-reqs
-sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential zlib1g-dev g++ curl libssl-dev vim unzip wget -y
+sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential zlib1g-dev g++ curl libssl-dev vim unzip wget libyaml-dev libyaml-ruby -y
 
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
@@ -40,6 +40,13 @@ sudo chown -R imon:imon /mnt
 
 # setup git
 setupgit() {
+
+  source ~/.bashrc
+  if [ -e $(which git) ]
+  then
+    return
+  fi
+
   cd /mnt/setup
   wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
   tar xf git-1.7.3.5.tar.bz2
@@ -53,6 +60,12 @@ export -f setupgit
 su imon -c "setupgit"
 
 setupruby() {
+  source ~/.bashrc
+  if [ -e $(which ruby) ]
+  then
+    return
+  fi
+
   cd /mnt/setup
   wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz
   tar xf  ruby-1.9.2-p0.tar.gz
@@ -63,6 +76,7 @@ setupruby() {
   ruby --version
 }
 
+# check for ruby binary
 export -f setupruby
 su imon -c "setupruby"
 
