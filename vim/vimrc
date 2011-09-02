@@ -53,6 +53,7 @@ let mapleader = ","
 nmap <leader>w :w!<CR>
 map <leader>e :e! ~/.vimrc<cr>
 map <leader>q :wq!<cr>
+map <leader>f :NERDTreeFind<cr>
 
 "experimental
 set autoread " autoread if file is changed from outside
