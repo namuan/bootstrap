@@ -11,21 +11,16 @@ set smarttab
 set lbr
 set tw=500
 
+" tab settings
 set ai "Auto indent
 set si "Smart indet
 set wrap "Wrap lines
-
-" tab settings
-"set expandtab
-"set autoindent
-""set smartindent
-"set shiftwidth=2
-"set tabstop=2
 
 set showmatch
 syntax on
 set number
 
+" NerdTree
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 map <F8> :NERDTreeToggle<CR>
@@ -38,8 +33,8 @@ map  <F2> <Esc>:wqa<CR>
 
 " run make and node
 nmap <F4> :w<CR>:make<CR>:cw<CR>
-map <F5> :w<CR>:!node %:p<CR>
-imap <F5> <Esc>:w<CR>:!node %:p<CR>
+"map <F5> :w<CR>:!node %:p<CR>
+"imap <F5> <Esc>:w<CR>:!node %:p<CR>
 
 " code formatting
 map <F6> <Esc>gg=G<CR>:w<CR>
@@ -53,9 +48,17 @@ let mapleader = ","
 nmap <leader>w :w!<CR>
 map <leader>e :e! ~/.vimrc<cr>
 map <leader>q :wq!<cr>
+map <leader>Q :q!<cr>
 map <leader>f :NERDTreeFind<cr>
+map <leader>c :Shell %<cr>
+imap <leader>c :Shell %<cr>
+map <leader>p :Python<cr>
+imap <leader>p :Python<cr>
+map <leader>n :Node %<cr>
+imap <leader>n :Node %<cr>
 
 "experimental
+"
 set autoread " autoread if file is changed from outside
 set wildmenu
 set ruler
@@ -76,3 +79,15 @@ inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 inoremap $t <><esc>i
 
+"Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" Makes it easy to run a shells
+" " example: can do ":Node %" to run the current file
+command! -nargs=* -complete=file Shell ConqueTermSplit <args>
+command! -nargs=* -complete=file Zsh ConqueTermSplit zsh <args>
+command! -nargs=* -complete=file Node ConqueTermSplit node <args>
+command! -nargs=* -complete=file Python ConqueTermSplit python <args>
