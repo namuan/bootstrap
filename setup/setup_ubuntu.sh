@@ -51,6 +51,18 @@ sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential  zl
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
 
+# for git http support
+# download and compile expat
+wget http://downloads.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
+tar xf expat-2.0.1.tar.gz
+cd expat-2.0.1/
+./configure
+make
+make install
+
+# download curl dev
+aptitude install libcurl-dev libcurl4 libcurl4-dev
+
 sudo useradd imon -m -s /bin/bash
 
 setupprofile() {
