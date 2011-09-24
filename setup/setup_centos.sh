@@ -42,9 +42,9 @@ setupgit() {
 
 }
 
-export -f setupgit
-su imon -c "setupgit"
-
+#export -f setupgit
+#su imon -c "setupgit"
+yum install git-all -y
 
 setupnode() {
         source ~/.devprofile
