@@ -2,6 +2,10 @@
 
 sudo ifconfig eth0 mtu 1492
 
+# for centos 5 run this
+wget http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+rpm -i epel-release-5-4.noarch.rpm
+
 yum update -y
 yum install vim-enhanced zlib zlib-devel -y
 yum groupinstall 'Development Tools' -y
