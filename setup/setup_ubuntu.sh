@@ -46,7 +46,7 @@ else
 fi
 
 # Installing  pre-reqs
-sudo aptitude install git-core openjdk-6-jre openjdk-6-jdk subversion build-essential  zlib1g-dev g++ curl libssl-dev vim unzip wget -y
+aptitude install build-essential git-core zlib1g-dev g++ curl libssl-dev unzip wget vim -y
 
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
