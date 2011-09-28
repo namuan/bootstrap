@@ -46,7 +46,7 @@ else
 fi
 
 # Installing  pre-reqs
-sudo aptitude install openjdk-6-jre openjdk-6-jdk subversion build-essential  zlib1g-dev g++ curl libssl-dev vim unzip wget -y
+sudo aptitude install git-core openjdk-6-jre openjdk-6-jdk subversion build-essential  zlib1g-dev g++ curl libssl-dev vim unzip wget -y
 
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
@@ -67,7 +67,6 @@ sudo useradd imon -m -s /bin/bash
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
-	echo 'export PATH=/mnt/local/git/bin:$PATH' >> ~/.devprofile
 	echo 'export PATH=/mnt/local/node/bin:$PATH' >> ~/.devprofile
 	echo 'export NODE_PATH=/mnt/local/node:/mnt/local/node/lib/node_modules' >> ~/.devprofile
 
@@ -81,22 +80,6 @@ su imon -c "setupprofile"
 rm -rf /mnt/*
 mkdir -vp /mnt/setup;mkdir -vp /mnt/softwares;mkdir -vp /mnt/workspace;mkdir -vp /mnt/.m2;mkdir -vp /mnt/.ivy2;mkdir -vp /mnt/local
 sudo chown -R imon:imon /mnt
-
-# setup git
-setupgit() {
-
-cd /mnt/setup
-wget http://kernel.org/pub/software/scm/git/git-1.7.3.5.tar.bz2
-tar xf git-1.7.3.5.tar.bz2
-cd git-1.7.3.5
-./configure --prefix=/mnt/local/git --without-tcltk
-make
-make install
-
-}
-
-export -f setupgit
-su imon -c "setupgit"
 
 setupnode() {
 	source ~/.devprofile
@@ -122,63 +105,5 @@ setupnode() {
 
 export -f setupnode
 su imon -c "setupnode"
-
-setupvim() {
-
-cd /mnt/setup
-wget https://github.com/scrooloose/nerdtree/zipball/4.1.0
-unzip 4.1.0
-cd *nerdtree*
-mkdir -vp ~/.vim
-cp -R * ~/.vim
-
-cat > ~/.vimrc <<END
-filetype plugin on
-filetype indent on
-
-set tabstop=4
-set shiftwidth=4
-set smartindent
-set autoindent
-set showmatch
-set ai
-syntax on
-set number
-
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
-
-" easy tab navigation
-map  <C-l> :tabn<CR>
-map  <C-k> :tabp<CR>
-map  <C-n> :tabnew<CR>
-map  <F2> <Esc>:wqa<CR>
-
-" run make and node
-nmap <F4> :w<CR>:make<CR>:cw<CR>
-map <F5> :w<CR>:!node %:p<CR>
-imap <F5> <Esc>:w<CR>:!node %:p<CR>
-
-" code formatting
-map <F3> <Esc>gg=G<CR>:w<CR>
-imap <F3> <Esc>gg=G<CR>:w<CR>
-END
-
-mkdir -vp ~/.vim/ftplugin
-
-cat > ~/.vim/ftplugin/javascript.vim <<END
-setlocal makeprg=jslint\ %
-setlocal errorformat=%-P%f,
-\%-G/*jslint\ %.%#*/,
-\%*[\ ]%n\ %l\\,%c:\ %m,
-\%-G\ \ \ \ %.%#,
-\%-GNo\ errors\ found.,
-\%-Q
-END
-
-}
-
-export -f setupvim
-su imon -c "setupvim"
 
 exit 0
