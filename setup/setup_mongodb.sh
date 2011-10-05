@@ -11,4 +11,4 @@ echo 'export PATH='$WORK_HOME'/mongodb/bin:$PATH' >> ~/.devprofile
 source ~/.devprofile
 
 mkdir $WORK_HOME/data
-mongod --dbpath $WORK_HOME/data
+#mongod --dbpath $WORK_HOME/data
