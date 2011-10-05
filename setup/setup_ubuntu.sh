@@ -2,6 +2,26 @@
 
 sudo ifconfig eth0 mtu 1492
 
+set -o errexit
+set -o nounset
+
+if [ "$(id -u)" != "0" ]; then
+    echo '** Script must be run as root **'
+    exit 1
+fi
+
+CURRENT_MTU=$( /sbin/ifconfig eth0 | grep MTU | awk '{print $5}' | cut -d: -f2 )
+
+if [ "$CURRENT_MTU" -ge "1500" ]; then
+  echo "Changing MTU from 1500 to 1492"
+  /sbin/ifconfig eth0 mtu 1492
+  sh -c "cat > /etc/network/if-up.d/mtu" <<EOT
+#!/bin/sh
+ifconfig eth0 mtu 1492
+EOT
+  chmod 755 /etc/network/if-up.d/mtu
+fi
+
 if [ ! -e $HOME/upgraded ]
 then
 
@@ -9,19 +29,24 @@ locale-gen en_US en_US.UTF-8; dpkg-reconfigure locales
 echo "127.0.0.1               localhost.localdomain localhost ubuntu" > /etc/hosts
 
 cat > /etc/apt/sources.list <<END
-deb http://archive.ubuntu.com/ubuntu karmic main
-deb http://security.ubuntu.com/ubuntu karmic-security main
+#############################################################
+################### OFFICIAL UBUNTU REPOS ###################
+#############################################################
 
-deb http://gb.archive.ubuntu.com/ubuntu/ karmic universe
-deb-src http://gb.archive.ubuntu.com/ubuntu/ karmic universe
+###### Ubuntu Main Repos
+deb http://uk.archive.ubuntu.com/ubuntu/ lucid main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ lucid main universe
 
-deb http://gb.archive.ubuntu.com/ubuntu/ karmic multiverse
-deb-src http://gb.archive.ubuntu.com/ubuntu/ karmic multiverse
+###### Ubuntu Update Repos
+deb http://uk.archive.ubuntu.com/ubuntu/ lucid-security main universe
+deb http://uk.archive.ubuntu.com/ubuntu/ lucid-updates main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ lucid-security main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ lucid-updates main universe
 END
 
-sudo aptitude update -y
+sudo aptitude update -q
 
-sudo apt-get install update-manager-core -y
+#sudo apt-get install update-manager-core -y
 
 cat > /etc/update-manager/release-upgrades  <<END
 # default behavior for the release upgrader
@@ -37,7 +62,10 @@ END
 
 touch $HOME/upgraded
 
-sudo do-release-upgrade
+echo "Upgrading system"
+apt-get upgrade -yqV
+
+#sudo do-release-upgrade
 
 sudo reboot
 
@@ -51,6 +79,30 @@ aptitude install build-essential git-core zlib1g-dev g++ curl libssl-dev unzip w
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo /etc/init.d/ssh restart
 
+if ! /bin/egrep -i "^admin\:" /etc/group &>/dev/null; then
+  echo "Creating the admin group"
+  groupadd admin
+fi
+
+if ! /bin/egrep -i "^%admin ALL" /etc/sudoers &>/dev/null; then
+  echo "Allowing sudo access for the admin group"
+cat <<EOF >> /etc/sudoers
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+EOF
+fi
+
+if ! /bin/egrep -i "imon" /etc/passwd &>/dev/null; then
+  echo "Creating user"
+
+  # to generate an encrypted password for useradd:
+  # perl -e 'print crypt("SECRET", "password"),"\n"'
+  useradd -m -s /bin/bash -G admin -pXXXXXXXX  -m imon
+
+  cp -r ~/.ssh /home/imon/
+  chown -R imon:imon /home/imon/.ssh
+fi
+
 # for git http support
 # download and compile expat
 wget http://downloads.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
@@ -62,8 +114,6 @@ make install
 
 # download curl dev
 aptitude install libcurl-dev libcurl4 libcurl4-dev
-
-sudo useradd imon -m -s /bin/bash
 
 setupprofile() {
 	echo '# dev profile' > ~/.devprofile
