@@ -44,9 +44,9 @@ deb-src http://uk.archive.ubuntu.com/ubuntu/ lucid-security main universe
 deb-src http://uk.archive.ubuntu.com/ubuntu/ lucid-updates main universe
 END
 
-sudo aptitude update -q
+aptitude update -q
 
-#sudo apt-get install update-manager-core -y
+apt-get install update-manager-core -y
 
 cat > /etc/update-manager/release-upgrades  <<END
 # default behavior for the release upgrader
@@ -63,11 +63,9 @@ END
 touch $HOME/upgraded
 
 echo "Upgrading system"
-apt-get upgrade -yqV
+do-release-upgrade
 
-#sudo do-release-upgrade
-
-sudo reboot
+reboot
 
 else
   echo "Already upgraded"
